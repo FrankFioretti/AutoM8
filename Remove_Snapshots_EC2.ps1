@@ -1,7 +1,7 @@
 ﻿## Delete Old Snapshots ##
 
-$region = us-west-2
-$instances = ((get-ec2instance -filter @( @{name='tag:Backup';values="Auto"}) -Region $region).instances).instanceid
+$region = "us-west-2"
+$instances = ((get-ec2instance -filter @( @{name='tag:Backup'; values="Auto"}; @{name='instance-state-code'; values = 0,80,16,32,64} ) -Region $region).instances).instanceid
 $volumes =foreach ($instance in $instances) {
 (((Get-EC2InstanceAttribute -instanceid $instance -region $region -Attribute blockdevicemapping).blockdevicemappings).ebs).volumeid
 }
