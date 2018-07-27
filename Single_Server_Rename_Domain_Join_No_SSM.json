@@ -305,6 +305,10 @@
                 "$secpasswd = ConvertTo-SecureString \"$pw\" -AsPlainText -Force\n",
                 "$pscredential = New-Object System.Management.Automation.PSCredential (\"$user\", $secpasswd)\n",
                 "Add-Computer -DomainName Domain.com -Credential $pscredential -NewName ",{ "Ref" : "ServerName" }," -OUPath \"OU=AWS,OU=servers,DC=domain,DC=com\" -Force\n",
+                "$region=\"us-east-2\"\n",
+                "$instanceid=Invoke-RestMethod -uri http://169.254.169.254/latest/meta-data/instance-id\n",
+                "$associationid=(Get-EC2IamInstanceProfileAssociation -Filter @( @{name='instance-id'; values=\"$instanceid\"} ) -Region $region).associationid\n",
+                "aws ec2 disassociate-iam-instance-profile --association-id $associationid --region $region\n",
                 "cfn-signal.exe -s true --stack ", { "Ref": "AWS::StackId" }," --region ", { "Ref": "AWS::Region" }," '", { "Ref": "WindowsServerWaitHandle" },"'  \n",
                 "Restart-Computer -Force\n",
                 "</powershell>\n"  
