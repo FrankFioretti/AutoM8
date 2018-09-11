@@ -95,13 +95,13 @@
  #Tag New VPCs
 
  $newdmzvpctag = New-Object Amazon.EC2.Model.Tag
- $tag.Key = "Name"
- $tag.Value = "DMZ"
+ $newdmzvpctag.Key = "Name"
+ $newdmzvpctag.Value = "DMZ"
  New-EC2Tag -Resources $newdmzvpc.VpcId -Tags $newdmzvpctag -region $region -Credential $newaccountcreds
 
  $newinternalvpctag = New-Object Amazon.EC2.Model.Tag
- $tag.Key = "Name"
- $tag.Value = "Internal"
+ $newinternalvpctag.Key = "Name"
+ $newinternalvpctag.Value = "Internal"
  New-EC2Tag -Resources $newinternalvpc.VpcId -Tags $newinternalvpctag -region $region -Credential $newaccountcreds
 
  #Create DHCP Options and associate with new VPCs
